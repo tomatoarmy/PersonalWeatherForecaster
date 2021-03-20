@@ -24,10 +24,10 @@ public class SearchCityActivity extends BaseActivity implements View.OnClickList
     EditText searchEt;
     ImageView submitIv;
     GridView searchGv;
-    String []hotCities = {"北京", "上海","上海","上海","上海","上海","上海","天津","上海","上海","上海"};
+    String []hotCities = {"北京", "广州","珠海","深圳","合肥","海口","石家庄","天津","武汉","长沙","南京"};
 
-    String url1 = "http://api.map.baidu.com/telematics/v3/weather?location=";
-    String url2 = "&output=json&ak=FkPhtMBKOHTIQNh7gG4cNUttSTyrOnzo";
+    String url1 = "http://apis.juhe.cn/simpleWeather/query?city=";
+    String url2 = "&key=a32f1f312dd7e66d70549d9edd0e0548";
     String city;
 
     @Override
@@ -75,7 +75,7 @@ public class SearchCityActivity extends BaseActivity implements View.OnClickList
     @Override
     public void onSuccess(String result) {
         WeatherBean weatherBean = new Gson().fromJson(result, WeatherBean.class);
-        if (weatherBean.getError() == 0){
+        if (weatherBean.getError_code() == 0){
             //WeatherBean中的Error参数要是0，说明这个城市存在
             Intent intent = new Intent(this, MainActivity.class);
             //清空原来的返回栈并创建一个新的返回栈
