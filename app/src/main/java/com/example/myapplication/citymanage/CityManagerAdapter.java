@@ -59,14 +59,6 @@ public class CityManagerAdapter extends BaseAdapter {
         holder.currentTempTv.setText(weatherBean.getResult().getRealtime().getTemperature()+"℃");
         holder.windTv.setText(weatherBean.getResult().getRealtime().getDirect()+weatherBean.getResult().getRealtime().getPower());
         holder.tempRangeTv.setText("");
-        /*WeatherBean.ResultsBean.WeatherDataBean dataBean = weatherBean.getResults().get(0).getWeather_data().get(0);
-        holder.conTv.setText("天气"+dataBean.getWeather());
-        String[] split = dataBean.getDate().split("：");
-        String todayTemp = split[1].replace(")", "");
-        holder.currentTempTv.setText(todayTemp);
-        holder.windTv.setText(dataBean.getWind());
-        holder.tempRangeTv.setText(dataBean.getTemperature());
-        Log.d("NNNNUUUUUMMMM", "getView: "+this.getCount());*/
         return convertView;
     }
 

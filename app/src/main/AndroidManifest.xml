@@ -13,7 +13,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.MyApplication"
         android:usesCleartextTraffic="true">
-        <activity android:name=".MoreActivity"></activity>
+        <activity android:name="more.MoreActivity"></activity>
         <activity android:name=".citymanage.DeleteCityActivity" />
         <activity android:name=".citymanage.SearchCityActivity" />
         <activity android:name=".citymanage.CityManagerActivity" />

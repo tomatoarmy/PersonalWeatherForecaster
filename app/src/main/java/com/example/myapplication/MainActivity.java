@@ -5,19 +5,26 @@ import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import com.example.myapplication.citymanage.CityManagerActivity;
 import com.example.myapplication.db.DBManager;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
+import more.MoreActivity;
+
 public class MainActivity extends AppCompatActivity implements View.OnClickListener{
+    private static final String TAG = "1111111111111qweqweqwe";
     ImageView addCityIv,moreIv;
     LinearLayout pointLayout;
     ViewPager mainVp;
@@ -27,14 +34,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     List<String>cityList;
     //表示ViewPager的页数指示器显示集合
     List<ImageView>imgList;
+    RelativeLayout outLayout;
     private CItyFragmentPagerAdapter adapter;
+    SharedPreferences pref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         addCityIv = findViewById(R.id.main_iv_add);
         moreIv = findViewById(R.id.main_iv_more);
+        outLayout = findViewById(R.id.main_out_layout);
+
+        //活动创建后首先判断所要加载的壁纸
+        exchangeBg();
 
         addCityIv.setOnClickListener(this);
         pointLayout = findViewById(R.id.main_layout_point);
@@ -44,6 +58,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         fragmentList = new ArrayList<>();
         cityList = DBManager.queryAllCityName(); //获取数据库包含的城市信息列表
         imgList = new ArrayList<>();
+
+        Log.d("12312qqq", "onCreate: "+cityList.size());
 
         if (cityList.size()==0){
             cityList.add("北京");
@@ -138,10 +154,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onRestart() {
         super.onRestart();
         List<String> list = DBManager.queryAllCityName();
+        cityList.clear();//重新加载之前，清空原来的数据源
         if (list.size() == 0) {
             cityList.add("北京");
         }
-        cityList.clear();//重新加载之前，清空原来的数据源
         cityList.addAll(list);
         //剩余城市也要创建对应Fragment的页面
         fragmentList.clear();
@@ -151,6 +167,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         imgList.clear();
         pointLayout.removeAllViews();//将布局当中所有元素移除
         initPoint();
+
+    }
+
+    /*换壁纸的函数*/
+    public void exchangeBg(){
+        pref = getSharedPreferences("bg_pref", MODE_PRIVATE);
+        int bgNum = pref.getInt("bg", 0);
+        switch (bgNum) {
+            case 0:
+                outLayout.setBackgroundResource(R.mipmap.bg);
+                break;
+            case 1:
+                outLayout.setBackgroundResource(R.mipmap.bg2);
+                break;
+            case 2:
+                outLayout.setBackgroundResource(R.mipmap.bg3);
+                break;
+            default:
+                break;
+        }
 
     }
 }

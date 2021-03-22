@@ -1,6 +1,8 @@
 package com.example.myapplication;
 
 import android.app.AlertDialog;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import android.text.TextUtils;
@@ -10,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,6 +24,10 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
+import more.MoreActivity;
+
+import static android.content.Context.MODE_PRIVATE;
+
 
 public class CityWeatherFragment extends BaseFragment implements View.OnClickListener{
 
@@ -28,11 +35,37 @@ public class CityWeatherFragment extends BaseFragment implements View.OnClickLis
             sportIndexTv,raysIndexTv;
     ImageView dayIv;
     LinearLayout futureLayout;
+    ScrollView outLayout;
 
     String city;
 
     String url1 = "http://apis.juhe.cn/simpleWeather/query?city=";
     String url2 = "&key=a32f1f312dd7e66d70549d9edd0e0548";
+
+    private SharedPreferences pref;
+    private int bgNum;
+
+
+    /*换壁纸的函数*/
+    public void exchangeBg(){
+        pref = getActivity().getSharedPreferences("bg_pref", MODE_PRIVATE);
+        int bgNum = pref.getInt("bg", 0);
+        switch (bgNum) {
+            case 0:
+                outLayout.setBackgroundResource(R.mipmap.bg);
+
+                break;
+            case 1:
+                outLayout.setBackgroundResource(R.mipmap.bg2);
+                break;
+            case 2:
+                outLayout.setBackgroundResource(R.mipmap.bg3);
+                break;
+            default:
+                break;
+        }
+
+    }
 
 
 
@@ -42,10 +75,10 @@ public class CityWeatherFragment extends BaseFragment implements View.OnClickLis
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_city_weather, container, false);
         initView(view);
+        exchangeBg();
         //可以通过Activity传值获取到当前Fragment加载的是哪个地方的天气情况
         Bundle bundle = getArguments();
         city = bundle.getString("city");
-        Log.d("555555555555555555", city);
         String url = url1 + city + url2;
 //        调用父类获取数据的方法
         loadDate(url);
@@ -104,41 +137,7 @@ public class CityWeatherFragment extends BaseFragment implements View.OnClickLis
             itemprangeTv.setText(dataBean.getTemperature());
         }
 
-        /*WeatherBean.ResultsBean resultsBean = weatherBean.getResults().get(0);
-        //获取指数信息集合列表
-        indexList = resultsBean.getIndex();
-        //设置TextView
-        dateTv.setText(weatherBean.getDate());
-        cityTv.setText(resultsBean.getCurrentCity());
-        //获取今日天气情况
-        WeatherBean.ResultsBean.WeatherDataBean todayDataBean = resultsBean.getWeather_data().get(0);
-        windTv.setText(todayDataBean.getWind());
-        tempRangeTv.setText(todayDataBean.getTemperature());
-        conditionTv.setText(todayDataBean.getWeather());
-        //获取实时温度，需要处理字符串
-        String[] split = todayDataBean.getDate().split("：");
-        String todayTemp = split[1].replace(")", "");
-        tempTv.setText(todayTemp);
-        //设置显示天气情况的图片
-        Picasso.with(getActivity()).load(todayDataBean.getDayPictureUrl()).into(dayIv);
-        //获取未来三天的天气情况，加载到Layout当中
-        List<WeatherBean.ResultsBean.WeatherDataBean> futureList = resultsBean.getWeather_data();
-        futureList.remove(0);
-        for (int i = 0; i < futureList.size(); i++) {
-            View itemView = LayoutInflater.from(getActivity()).inflate(R.layout.item_main_center, null);
-            itemView.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
-            futureLayout.addView(itemView);
-            TextView idateTv = itemView.findViewById(R.id.item_center_tv_date);
-            TextView iconTv = itemView.findViewById(R.id.item_center_tv_con);
-            TextView itemprangeTv = itemView.findViewById(R.id.item_center_tv_temp);
-            ImageView iIv = itemView.findViewById(R.id.item_center_iv);
-            //获取对应位置的天气情况
-            WeatherBean.ResultsBean.WeatherDataBean dataBean = futureList.get(i);
-            idateTv.setText(dataBean.getDate());
-            iconTv.setText(dataBean.getWeather());
-            itemprangeTv.setText(dataBean.getTemperature());
-            Picasso.with(getActivity()).load(dataBean.getDayPictureUrl()).into(iIv);
-        }*/
+
     }
 
     private void initView(View view){
@@ -156,6 +155,8 @@ public class CityWeatherFragment extends BaseFragment implements View.OnClickLis
         raysIndexTv = view.findViewById(R.id.frag_index_rays);
         dayIv = view.findViewById(R.id.frag_iv_today);
         futureLayout = view.findViewById(R.id.frag_center_layout);
+        outLayout = view.findViewById(R.id.out_layout);
+
         //设置点击事件的监听
         clothIndexTv.setOnClickListener(this);
         carIndexTv.setOnClickListener(this);
