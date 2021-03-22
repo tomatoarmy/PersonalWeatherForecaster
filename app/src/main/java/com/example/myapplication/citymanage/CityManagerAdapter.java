@@ -62,7 +62,6 @@ public class CityManagerAdapter extends BaseAdapter {
         holder.currentTempTv.setText(todayTemp);
         holder.windTv.setText(dataBean.getWind());
         holder.tempRangeTv.setText(dataBean.getTemperature());
-        Log.d("NNNNUUUUUMMMM", "getView: "+this.getCount());
         return convertView;
     }
 

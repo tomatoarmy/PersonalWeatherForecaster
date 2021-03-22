@@ -32,7 +32,6 @@ public class CItyFragmentPagerAdapter extends FragmentStatePagerAdapter {
     //当ViewPager页数发生改变时，必须要重写两个方法
     @Override
     public int getItemPosition(@NonNull Object object) {
-        Log.d("000000000000111111111", "getItemPosition: ");
         if (childCount > 0){
             childCount--;
             return POSITION_NONE;//该标识符表明Item项已经不存在于host view中了
@@ -42,7 +41,6 @@ public class CItyFragmentPagerAdapter extends FragmentStatePagerAdapter {
 
     @Override
     public void notifyDataSetChanged() {
-        Log.d("000000000000111111111", "notifyDataSetChanged: ");
         this.childCount = getCount();
         super.notifyDataSetChanged();
     }
